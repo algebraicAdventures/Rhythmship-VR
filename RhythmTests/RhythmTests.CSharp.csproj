@@ -75,8 +75,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Editor 1\CustPropertyDrawer.cs" />
+    <Compile Include="Assets\Scripts\ArrayLayout.cs" />
     <Compile Include="Assets\Scripts\BasicSequencer.cs" />
+    <Compile Include="Assets\Scripts\InteractController.cs" />
     <Compile Include="Assets\Scripts\Metronome.cs" />
+    <Compile Include="Assets\Scripts\TestScript.cs" />
     <Compile Include="Assets\SteamVR\Extras\SteamVR_GazeTracker.cs" />
     <Compile Include="Assets\SteamVR\Extras\SteamVR_LaserPointer.cs" />
     <Compile Include="Assets\SteamVR\Extras\SteamVR_Teleporter.cs" />
