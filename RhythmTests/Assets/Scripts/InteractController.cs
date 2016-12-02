@@ -29,6 +29,12 @@ public class InteractController : MonoBehaviour {
     public int[] sequencer3 = new int[16];
     int seqPosition = 0;
 
+    float beatTime;
+    bool checkButtonInput = false;
+    bool checkThrottleInput = false;
+    bool checkSwitchInput = false;
+    float buttonInputTimer, throttleInputTimer, switchInputTimer;
+
     // Use this for initialization
     void Start () {
         bgmSource = AddAudio(bgmClip, true, false, .7f);
@@ -43,12 +49,29 @@ public class InteractController : MonoBehaviour {
         metro = gameObject.GetComponent<Metronome>();
         metro.OnTick += Tick;
         bgmSource.Play();
+        beatTime = 60 / metro.BPM;
     }
 	
 	// Update is called once per frame
 	void Update () {
-	    
-	}
+	    if (checkButtonInput) {
+            buttonInputTimer += Time.deltaTime;
+        } else {
+            buttonInputTimer = 0f;
+        }
+
+        if (checkSwitchInput) {
+            switchInputTimer += Time.deltaTime;
+        } else {
+            switchInputTimer = 0f;
+        }
+
+        if (checkThrottleInput) {
+            throttleInputTimer += Time.deltaTime;
+        } else {
+            throttleInputTimer = 0;
+        }
+    }
 
     public AudioSource AddAudio(AudioClip clip, bool loop, bool playAwake, float vol)
     {
@@ -65,20 +88,32 @@ public class InteractController : MonoBehaviour {
         if (sequencer1[seqPosition] == 1) {
             buttonCueSource.Play();
         } else if (sequencer1[seqPosition] == 2) {
-                // test for input
-            }
+            checkButtonInput = true;
+        } else {
+            checkButtonInput = false;
+        }
 
         if (sequencer2[seqPosition] == 1) {
             switchCueSource.Play();
-        } else if (sequencer2[seqPosition] == 2) {
-                // test for input
-            }
+        } else if (sequencer2[seqPosition] == 2)
+        {
+            checkSwitchInput = true;
+        }
+        else
+        {
+            checkSwitchInput = false;
+        }
 
         if (sequencer3[seqPosition] == 1) {
             throttleCueSource.Play();
-        } else if (sequencer3[seqPosition] == 2) {
-                // test for input
-            }
+        } else if (sequencer3[seqPosition] == 2)
+        {
+            checkThrottleInput = true;
+        }
+        else
+        {
+            checkThrottleInput = false;
+        }
 
         seqPosition++;
         if (seqPosition >= sequencer1.Length)
@@ -87,4 +122,32 @@ public class InteractController : MonoBehaviour {
         }
     }
 
+    public void ButtonInput()
+    {
+        Debug.Log("Button pressed.");
+        if (buttonInputTimer >= beatTime / 2 && buttonInputTimer <= beatTime + beatTime / 2) {
+            // success
+        } else {
+            failure();
+        }
+    }
+
+    public void SwitchInput()
+    {
+        Debug.Log("Switch flipped.");
+        // check for timing
+    }
+
+    public void ThrottleInput()
+    {
+        Debug.Log("Throttle engaged.");
+        // check for timing
+    }
+
+    void failure()
+    {
+        // subtract ship health
+        // play failure sound
+        // failure animations
+    }
 }
